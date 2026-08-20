@@ -20,7 +20,7 @@ cp -r ag-translate ~/.claude/skills/ag-translate
 
 ## Status
 
-This is an early, solo-built prototype, currently scoped to toric geometry (cones, fans, polytopes, toric varieties, divisors, class/Picard groups) — the area covered by the initial test corpus. The glossary is a living document: every real translation run is a chance to catch and fix a wrong entry, and it's already been corrected once against a real OSCAR v1.5.0 + Macaulay2 install (see the glossary file's changelog note). Extending it to other areas of commutative algebra/algebraic geometry (Gröbner bases in general, sheaf cohomology, etc.) is a natural next step and contributions are welcome — see below.
+This is an early, solo-built prototype, currently scoped to toric geometry (cones, fans, polytopes, toric varieties, divisors, class/Picard groups) — the area covered by the initial test corpus. The glossary is a living document: every real translation run is a chance to catch and fix a wrong entry, and it's already been corrected once against a real OSCAR v1.5.0 + Macaulay2. Extending it to other areas of commutative algebra/algebraic geometry (Gröbner bases in general, sheaf cohomology, etc.) is a natural next step and contributions are welcome — see below.
 
 ## Test corpus
 
