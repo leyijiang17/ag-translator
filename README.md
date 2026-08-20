@@ -2,17 +2,6 @@
 
 A Claude Code skill that translates algebraic geometry / commutative algebra code between **Julia's OSCAR package** and **Macaulay2**, in either direction — and actually verifies the translation by running both the original and translated code, rather than trusting a one-shot LLM guess.
 
-## The problem
-
-Algebraic geometers split across several incompatible computer algebra systems (Macaulay2, Singular, Sage, Julia/OSCAR, Magma, Mathematica). Collaborators on the same project routinely end up in different languages, and switching costs real research time. Existing tools solve *adjacent* problems — OSCAR unifies several systems natively in Julia, Sage can drive Macaulay2 as a subprocess — but nothing translates an existing script in one system into idiomatic, runnable code in another. That's what this project does, scoped for now to OSCAR ↔ Macaulay2.
-
-## Why this is tractable now
-
-Two things make LLM-based translation viable here in a way it wasn't a couple of years ago:
-
-1. **A grounded glossary.** `ag-translate/references/toric_glossary.md` is a curated correspondence table between OSCAR and Macaulay2 function names/idioms, built from official documentation and corrected against real installs — not just an LLM's (thin, for these languages) training-data memory.
-2. **Checkable output.** Algebraic geometry computations have invariants — dimension, degree, a Hilbert basis, whether a group is free — that can be computed in both languages and compared. So instead of trusting a translation, the skill generates one, actually runs both sides locally, compares outputs, and repairs mismatches before handing anything back.
-
 ## How it works
 
 See `ag-translate/SKILL.md` for the full workflow. In short: segment the source into blocks → translate each block using the glossary first, live introspection second → propose verification checkpoints per block → run both languages and compare → repair on mismatch (up to 3 attempts) → write output with clearly delimited blocks + a manifest, so a later re-run can re-translate only new/changed material instead of redoing the whole file.
