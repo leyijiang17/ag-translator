@@ -1,0 +1,34 @@
+{
+  "skill_name": "ag-translate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I've got this Julia/OSCAR script for computing with cones and an affine toric variety (evals/files/cones_example.jl). My collaborator only uses Macaulay2 — can you translate it for me so they can run it?",
+      "expected_output": "A Macaulay2 (.m2) translation of the script, with each block clearly delimited (ag-translate markers), a manifest file (.ag_manifest.json) recording per-block source hashes and status, and a short summary distinguishing verified/repaired/flagged/not-checked blocks. Since this sandbox has no julia or M2 installed, actual checkpoint execution should fail gracefully (run_julia.sh / run_m2.sh report 'not found on PATH') and the summary should say verification could not run rather than falsely claiming success. The translation itself should reflect correct use of the glossary: positive_hull -> coneFromVData (with the row/column orientation caveat considered), polarize -> dualCone, hilbert_basis -> hilbertBasis, intersect -> intersect, and should recognize that OSCAR's is_normal(Y) has no Macaulay2 isNormal equivalent because M2's NormalToricVariety is normal by construction (a GAP case from the glossary) rather than inventing a function call.",
+      "files": ["evals/files/cones_example.jl"],
+      "expectations": [
+        "Output includes a Macaulay2 (.m2) file",
+        "Output includes a manifest JSON file tracking block hashes/status",
+        "Translated code uses coneFromVData (not a hallucinated cone constructor name)",
+        "Translated code uses hilbertBasis for the Hilbert basis computation",
+        "The is_normal(Y) call is NOT translated as a fabricated isNormal(Y) function call in Macaulay2 -- the response should note normality holds by construction for NormalToricVariety",
+        "The response does not falsely claim the translation was verified by actually running julia/M2 -- it should note verification could not execute because julia/M2 are unavailable in this environment",
+        "Blocks in the output file are wrapped in identifiable markers (e.g. '-- ag-translate: block-N start/end')"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Please port this OSCAR divisor computation (evals/files/divisors_example.jl) to Macaulay2 -- I need to check some of these divisor properties on P^2 in M2 too.",
+      "expected_output": "A Macaulay2 translation, correctly handling the fact that OSCAR's is_principal has no direct Macaulay2 predicate (a GAP case -- should be translated as checking whether the divisor maps to zero under the Weil-divisor-to-class-group map, e.g. via fromWDivToCl, not a hallucinated isPrincipal function). class_group/picard_group should map to classGroup/picardGroup. ToricDivisor argument order should be flipped correctly (M2 takes the coefficient list first, then the variety). The response should flag is_feasible and torus_invariant_prime_divisors as uncertain/needing live verification per the glossary rather than confidently inventing exact M2 names for them.",
+      "files": ["evals/files/divisors_example.jl"],
+      "expectations": [
+        "Output includes a Macaulay2 (.m2) file",
+        "is_principal is NOT translated as a fabricated isPrincipal(...) Macaulay2 function -- translated via the class-group-map idiom or explicitly flagged as unverified",
+        "ToricDivisor(P2, [4,2,3]) is translated to toricDivisor with the coefficient list argument BEFORE the variety argument (M2 order), not copied in OSCAR's order",
+        "class_group and picard_group are translated to classGroup and picardGroup respectively",
+        "The response flags at least one function (is_feasible or torus_invariant_prime_divisors) as uncertain / needing live confirmation rather than stating it with full confidence",
+        "The response does not falsely claim the translation was verified by actually running julia/M2"
+      ]
+    }
+  ]
+}
