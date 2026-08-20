@@ -32,4 +32,4 @@ The most valuable contribution right now is glossary entries: if you translate s
 
 ## License
 
-MIT — see `LICENSE`. (Happy to switch this if you'd prefer something else, e.g. Apache-2.0.)
+MIT — see `LICENSE`.
